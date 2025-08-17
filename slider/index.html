@@ -1,128 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>CodePen - Full-Screen Responsive Image Slider</title>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
-  <link rel="stylesheet" href="./style.css">
-<style>
-  @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap");
+  <meta charset="UTF-8" />
+  <title>1080×1920 Vertical Slider</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap");
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: "Lexend", sans-serif;
-  background-color: #362a2b;
-  color: #e5ebf3;
-}
+    html, body {
+      height: 100%;
+      background: #362a2b;
+      color: #e5ebf3;
+      font-family: "Lexend", sans-serif;
+      display: grid;
+      place-items: center; /* center the slider on the page */
+    }
 
-.slider {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
+    /* ====== Slider frame (targets 1080x1920) ====== */
+    .slider {
+      position: relative;
+      /* Exact size on big screens */
+      width: 1080px;
+      height: 1920px;
 
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-}
+      /* Responsive fallback: keep 9:16 and fit smaller viewports */
+      aspect-ratio: 9 / 16;
+      height: min(1920px, 100vh);
+      width: calc(min(1920px, 100vh) * 9 / 16);
 
-.slide.current {
-  opacity: 1;
-}
+      overflow: hidden;
+      border-radius: 16px;
+    }
 
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
 
-.slide:first-child {
-  background: url("1.jpeg") no-repeat
-    center top/cover;
-}
+    .slide.current { opacity: 1; }
 
-.slide:nth-child(2) {
-  background: url("2.jpeg") no-repeat
-    center top/cover;
-}
+    /* Set your images */
+    .slide:nth-child(1) { background-image: url("1.jpeg"); }
+    .slide:nth-child(2) { background-image: url("2.jpeg"); }
+    .slide:nth-child(3) { background-image: url("3.jpeg"); }
+    .slide:nth-child(4) { background-image: url("4.jpeg"); }
+    .slide:nth-child(5) { background-image: url("5.jpeg"); }
+    .slide:nth-child(6) { background-image: url("6.jpeg"); }
 
-.slide:nth-child(3) {
-  background: url("3.jpeg") no-repeat
-    center top/cover;
-}
+    /* Optional content area inside a slide */
+    .content {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 48px;
+      line-height: 1.6;
+      background: rgba(0,0,0,0.35);
+      padding: 16px 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(2px);
+    }
 
-  .slide:nth-child(4) {
-  background: url("4.jpeg") no-repeat
-    center top/cover;
-}
+    .content h1 { font-size: 28px; margin-bottom: 8px; }
+    .content p { font-size: 16px; }
 
-  .slide:nth-child(5) {
-  background: url("5.jpeg") no-repeat
-    center top/cover;
-}
+    /* Nav buttons (now inside .slider and centered vertically) */
+    .buttons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none; /* allow clicks through except on buttons */
+    }
 
-  .slide:nth-child(6) {
-  background: url("6.jpeg") no-repeat
-    center top/cover;
-}
+    .buttons button {
+      pointer-events: auto;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 2px solid #e5ebf3;
+      background: transparent;
+      color: #e5ebf3;
+      cursor: pointer;
+      padding: 12px 14px;
+      border-radius: 50%;
+      outline: none;
+    }
 
-.buttons button#prev {
-  position: absolute;
-  top: 50%;
-  left: 1rem;
-}
+    .buttons #prev { left: 16px; }
+    .buttons #next { right: 16px; }
 
-.buttons button#next {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-}
-
-.buttons button {
-  border: 2px solid #e5ebf3;
-  background-color: transparent;
-  color: #e5ebf3;
-  cursor: pointer;
-  padding: 13px 15px;
-  border-radius: 50%;
-  outline: none;
-}
-
-.buttons button:hover {
-  background-color: #e5ebf3;
-  color: #362a2b;
-}
-
-@media (min-width: 640px) and (min-height: 640px) {
-  .slide .content {
-    bottom: 70px;
-    left: -600px;
-    width: 600px;
-    padding: 2rem;
-    line-height: 1.6;
-  }
-
-  .slide .content h1 {
-    font-size: 2rem;
-  }
-
-  .slide.current .content {
-    transform: translateX(600px);
-  }
-}
-</style>
+    .buttons button:hover {
+      background-color: #e5ebf3;
+      color: #362a2b;
+    }
+  </style>
 </head>
-
 <body>
-  <!-- partial:index.partial.html -->
-  <div class="slider">
+
+  <div class="slider" id="slider">
     <div class="slide current"></div>
     <div class="slide"></div>
     <div class="slide"></div>
@@ -130,12 +111,20 @@ body {
     <div class="slide"></div>
     <div class="slide"></div>
 
+    <!-- Example optional caption block -->
+    <!--
+    <div class="content">
+      <h1>Title</h1>
+      <p>Short description here.</p>
+    </div>
+    -->
+
+    <div class="buttons">
+      <button id="prev" aria-label="Previous slide"><i class="fas fa-arrow-left"></i></button>
+      <button id="next" aria-label="Next slide"><i class="fas fa-arrow-right"></i></button>
+    </div>
   </div>
-  <div class="buttons">
-    <button id="prev"><i class="fas fa-arrow-left"></i></button>
-    <button id="next"><i class="fas fa-arrow-right"></i></button>
-  </div>
-  <!-- partial -->
+
   <script>
     const slides = document.querySelectorAll(".slide");
     const nextButton = document.getElementById("next");
@@ -144,47 +133,41 @@ body {
     const intervalTime = 5000;
     let slideInterval;
 
-    const nextSlide = () => {
-      const current = document.querySelector(".current");
+    function goToNext() {
+      const current = document.querySelector(".slide.current");
       current.classList.remove("current");
-      if (current.nextElementSibling) {
-        current.nextElementSibling.classList.add("current");
-      } else {
-        slides[0].classList.add("current");
-      }
-    };
-
-    const prevSlide = () => {
-      const current = document.querySelector(".current");
-      current.classList.remove("current");
-      if (current.previousElementSibling) {
-        current.previousElementSibling.classList.add("current");
-      } else {
-        slides[slides.length - 1].classList.add("current");
-      }
-    };
-
-    nextButton.addEventListener("click", () => {
-      nextSlide();
-      if (auto) {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(nextSlide, intervalTime);
-      }
-    });
-    prevButton.addEventListener("click", () => {
-      prevSlide();
-      if (auto) {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(nextSlide, intervalTime);
-      }
-    });
-
-    if (auto) {
-      slideInterval = setInterval(nextSlide, intervalTime);
+      const next = current.nextElementSibling?.classList.contains("slide")
+        ? current.nextElementSibling
+        : slides[0];
+      next.classList.add("current");
     }
 
+    function goToPrev() {
+      const current = document.querySelector(".slide.current");
+      current.classList.remove("current");
+      const prev = current.previousElementSibling?.classList.contains("slide")
+        ? current.previousElementSibling
+        : slides[slides.length - 1];
+      prev.classList.add("current");
+    }
+
+    nextButton.addEventListener("click", () => {
+      goToNext();
+      if (auto) {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(goToNext, intervalTime);
+      }
+    });
+
+    prevButton.addEventListener("click", () => {
+      goToPrev();
+      if (auto) {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(goToNext, intervalTime);
+      }
+    });
+
+    if (auto) slideInterval = setInterval(goToNext, intervalTime);
   </script>
-
 </body>
-
 </html>
